@@ -29,6 +29,8 @@ public class RetrofitHelper {
     private static NewsApis videoApi;
     private static ImageApis imageApis;
 
+    static boolean flag = true;
+
     public static NewsApis getNewsApi() {
         initOkHttp();
         if (videoApi == null) {
@@ -62,7 +64,7 @@ public class RetrofitHelper {
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
             if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+                loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.HEADERS);
                 builder.addInterceptor(loggingInterceptor);
             }
             File cacheFile = new File(Constants.PATH_CACHE);
@@ -77,28 +79,37 @@ public class RetrofitHelper {
                                 .build();
                     }
                     Response response = chain.proceed(request);
-//
-//                    if (SystemUtils.isNetworkConnected()) {
-//                    int maxAge = 60;
-//                    // 有网络时, 不缓存, 最大保存时长为0
-//                    response.newBuilder()
-//                            .removeHeader("Pragma")
-//                            .header("Cache-Control", "public, max-age=" + maxAge)
-//                            .build();
-//                    } else {
-//                        // 无网络时，设置超时为4周
-//                        int maxStale = 60 * 60 * 24 * 28;
-//                        response.newBuilder()
-//                                .header("Cache-Control", "public, only-if-cached, max-stale=" + maxStale)
-//                                .removeHeader("Pragma")
-//                                .build();
-//                    }
                     return response;
                 }
             };
+
+            Interceptor headerInterceptor = new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+
+                    Request request = chain.request();
+//                    Request.Builder builder = request.newBuilder();
+//                    request = builder.addHeader("cookie", "cookie1").build();
+
+                    Response response = chain.proceed(request);
+
+//                    if(flag){
+//                        Request.Builder b = request.newBuilder();
+//                        request = b.removeHeader("cookie")
+//                                .addHeader("cookie", "cookie2")
+//                                .build();
+//                        response = chain.proceed(request);
+//                        flag = false;
+//                    }
+
+                    return response;
+                }
+            };
+
             //设置缓存
-            builder.addNetworkInterceptor(cacheInterceptor);
+//            builder.addNetworkInterceptor(cacheInterceptor);
             builder.addInterceptor(cacheInterceptor);
+            builder.addInterceptor(headerInterceptor);
             builder.cache(cache);
             //设置超时
             builder.connectTimeout(10, TimeUnit.SECONDS);

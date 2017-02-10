@@ -17,14 +17,6 @@ import rx.Observable;
 public interface NewsApis {
     String HOST = "http://m.27270.com/ent/rentiyishu/";
 
-    //    @GET("classify.shtml")
-//    Observable<JavaHttpResponse<NewsHomeResponse>> getNewsClassify();
-//
-//    @GET("news.shtml?pagesize=10&level=1&order=t")
-//    Observable<JavaHttpResponse<List<News>>> getNewsList(@Query("pagenum") int pagenum,@Query("code") String code);
-//
-//    @POST("")
-//    Call<NewsHomeResponse> getget(@Url String url);
     @GET("list_32_{page}.html")
     Observable<String> getHtml(@Path("page") String page);
 

@@ -6,8 +6,13 @@ import android.widget.TextView;
 
 import com.bjfio.readygo.R;
 import com.bjfio.readygo.base.BaseFragment;
+import com.bjfio.readygo.model.net.RetrofitHelper;
 
 import butterknife.BindView;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * Created by Administrator on 2016/8/1.

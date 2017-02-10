@@ -27,10 +27,16 @@ public class ImageLoader {
                 .addHeader("User-Agent","Mozilla/5.0 (Linux; U; Android 6.0.1; zh-CN; SM-G9250 Build/MMB29K) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 UCBrowser/11.1.0.870 U3/0.8.0 Mobile Safari/534.30")
                 .addHeader("Accept-Language","zh-CN")
                 .addHeader("Accept-Encoding","gzip")
-                .addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8,UC/145,plugin/1")                .build());
+                .addHeader("Accept","text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8,UC/145,plugin/1")
+                .build());
 
 
         Glide.with(context).load(glideUrl).crossFade().diskCacheStrategy(DiskCacheStrategy.SOURCE).
+                into(imageView);
+    }
+
+    public static void loadImage(Context context, String url,final ImageView imageView) {    //使用Glide加载圆形ImageView(如头像)时，不要使用占位图
+        Glide.with(context).load(url).crossFade().diskCacheStrategy(DiskCacheStrategy.SOURCE).
                 into(imageView);
     }
 
