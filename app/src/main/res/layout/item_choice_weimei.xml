@@ -8,22 +8,44 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:background="@color/toolbar_menu_bg"/>
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="美女图片"
-        android:textSize="15sp"
-        android:textColor="@color/black"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:gravity="center_vertical"
+        >
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:text="美女图片"
+            android:textColor="@color/black"
+            android:textSize="15sp" />
+
+
+        <TextView
+            android:id="@+id/more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="5dp"
+            android:text="更多"
+            android:textColor="@color/black"
+            android:layout_alignParentRight="true"
+            android:textSize="15sp" />
+    </RelativeLayout>
+
 
     <GridLayout
         android:id="@+id/gridlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="2dp"
         android:columnCount="2"
         />
 

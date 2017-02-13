@@ -34,8 +34,8 @@ public class AmazingToolbar extends FrameLayout {
     protected TextView center_tab;
     @BindView(R.id.left_tab)
     protected TextView left_tab;
-    @BindView(R.id.right_tab)
-    protected TextView right_tab;
+//    @BindView(R.id.right_tab)
+//    protected TextView right_tab;
     @BindView(R.id.searchBtn)
     protected ImageView searchBtn;
     @BindView(R.id.moreBtn)
@@ -84,7 +84,8 @@ public class AmazingToolbar extends FrameLayout {
         inflate(context, R.layout.amazing_tool_bar, this);
         ButterKnife.bind(this);
 
-        this.tabs = new TextView[]{this.left_tab, this.center_tab, this.right_tab};
+        this.tabs = new TextView[]{this.left_tab, this.center_tab};
+//        this.tabs = new TextView[]{this.left_tab, this.center_tab, this.right_tab};
         this.tabTextColor = this.center_tab.getTextColors();
 
         this.rectPaint = new Paint();
@@ -144,6 +145,25 @@ public class AmazingToolbar extends FrameLayout {
         for (int i = 0; i < tabCount; i++) {
             this.tabs[i].setOnClickListener(localTabClick);
             this.tabs[i].setText(this.mAdapter.getPageTitle(i));
+            if (i != this.mViewPager.getCurrentItem())
+                continue;
+            this.tabs[i].setSelected(true);
+        }
+
+    }
+
+    public void notifyDataSetChanged(String firstName) {
+        this.tabCount = this.mAdapter.getCount();
+        TabClick localTabClick;
+        localTabClick = new TabClick();
+
+        for (int i = 0; i < tabCount; i++) {
+            this.tabs[i].setOnClickListener(localTabClick);
+            if(i == 0) {
+                this.tabs[i].setText(firstName);
+            }else{
+                this.tabs[i].setText(this.mAdapter.getPageTitle(i));
+            }
             if (i != this.mViewPager.getCurrentItem())
                 continue;
             this.tabs[i].setSelected(true);

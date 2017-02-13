@@ -20,6 +20,7 @@
         <activity android:name=".ui.activitys.BrowseImagesActivity" />
         <activity android:name=".ui.view.picview.ImageScanActivity2" />
         <activity android:name=".ui.activitys.CameraActivity" />
+        <activity android:name=".ui.activitys.ImageListActivity" />
 
 
         <activity
@@ -53,6 +54,7 @@
             android:name="com.umeng.socialize.editorpage.ShareActivity"
             android:excludeFromRecents="true"
             android:theme="@style/Theme.UMDefault" />
+
 
         <meta-data
             android:name="com.bjfio.readygo.component.CustomGlideModule"

@@ -44,6 +44,7 @@
                 android:id="@+id/right_tab"
                 style="@style/toolbar_tab_text"
                 android:layout_toRightOf="@id/center_tab"
+                android:visibility="gone"
                 android:text="好声音" />
         </RelativeLayout>
     </RelativeLayout>

@@ -26,7 +26,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
@@ -55,7 +54,7 @@ public class ChoiceFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         FrameLayout frameLayout = new FrameLayout(mContext);
         ProgressBar progressBar = new ProgressBar(mContext);
-        FrameLayout.LayoutParams vlp = new FrameLayout.LayoutParams(200,200);
+        FrameLayout.LayoutParams vlp = new FrameLayout.LayoutParams(200, 200);
         vlp.gravity = Gravity.CENTER;
         progressBar.setLayoutParams(vlp);
         frameLayout.addView(progressBar);
@@ -73,7 +72,19 @@ public class ChoiceFragment extends BaseFragment {
     @Override
     protected void lazyFetchData() {
         super.lazyFetchData();
-        RetrofitHelper.getImageApi().getMainUrl().
+        Observable<List<Object>> response1 = RetrofitHelper.getImageApi().getHairUrl()
+                .flatMap(new Func1<String, Observable<List<Object>>>() {
+                    @Override
+                    public Observable<List<Object>> call(String s) {
+                        Document response = Jsoup.parse(s);
+                        if (response != null) {
+                            return RxUtil.createData(parseHair(response));
+                        }
+                        return Observable.error(new Exception());
+                    }
+                });
+
+        Observable<List<Object>> response2 = RetrofitHelper.getImageApi().getMainUrl().
                 flatMap(new Func1<String, Observable<List<Object>>>() {
                     @Override
                     public Observable<List<Object>> call(String s) {
@@ -83,7 +94,11 @@ public class ChoiceFragment extends BaseFragment {
                         }
                         return Observable.error(new Exception());
                     }
-                })
+                });
+
+        Observable<List<Object>> mergedObservable = Observable.merge(response1, response2);
+
+        mergedObservable
                 .compose(RxUtil.<List<Object>>rxSchedulerHelper())
                 .subscribe(new Action1<List<Object>>() {
                     @Override
@@ -107,27 +122,27 @@ public class ChoiceFragment extends BaseFragment {
         List<Object> list = new ArrayList<>();
         Elements elements = document.select("div[class^=w960 r]");
         Element elementMain = elements.get(0);
-
-        Elements elementBanner = elementMain.select("div[class^=hd l re]");
-        Elements bannerinfos = elementBanner.select("a");
-        BannerInfo bannerinfo = new BannerInfo();
-        for (Element info : bannerinfos){
-            Elements a = info.select("a");
-            String title = a.attr("imgsm");
-            String href = a.attr("href");
-            String img = a.select("img").attr("src");
-            System.out.println(title);
-            System.out.println(href);
-            System.out.println(img);
-            Task task = new Task(title,img,href,"");
-            bannerinfo.getList().add(task);
-        }
-        list.add(bannerinfo);
+//
+//        Elements elementBanner = elementMain.select("div[class^=hd l re]");
+//        Elements bannerinfos = elementBanner.select("a");
+//        BannerInfo bannerinfo = new BannerInfo();
+//        for (Element info : bannerinfos){
+//            Elements a = info.select("a");
+//            String title = a.attr("imgsm");
+//            String href = a.attr("href");
+//            String img = a.select("img").attr("src");
+//            System.out.println(title);
+//            System.out.println(href);
+//            System.out.println(img);
+//            Task task = new Task(title,img,href,"");
+//            bannerinfo.getList().add(task);
+//        }
+//        list.add(bannerinfo);
 
         Elements elementRecent = elementMain.select("div[class^=w240 r BGfff]");
         Elements recentinfos = elementRecent.select("li");
         RecentInfo recentinfo = new RecentInfo();
-        for (Element info : recentinfos){
+        for (Element info : recentinfos) {
             Elements a = info.select("a");
             String title = a.attr("title");
             String href = a.attr("href");
@@ -135,7 +150,7 @@ public class ChoiceFragment extends BaseFragment {
             System.out.println(title);
             System.out.println(href);
             System.out.println(img);
-            Task task = new Task(title,img,href,"");
+            Task task = new Task(title, img, href, "");
             recentinfo.getList().add(task);
         }
         list.add(recentinfo);
@@ -143,7 +158,7 @@ public class ChoiceFragment extends BaseFragment {
         Elements elementWeiMei = elementMain.select("div[class^=Cstyle1]");
         Elements weimeiinfos = elementWeiMei.select("li");
         WeiMeiInfo weimeiinfo = new WeiMeiInfo();
-        for (Element info : weimeiinfos){
+        for (Element info : weimeiinfos) {
             Elements a = info.select("a");
             String title = a.select("img").attr("alt");
             String href = a.attr("href");
@@ -151,15 +166,15 @@ public class ChoiceFragment extends BaseFragment {
             System.out.println(title);
             System.out.println(href);
             System.out.println(img);
-            Task task = new Task(title,img,href,"");
+            Task task = new Task(title, img, href, "");
             weimeiinfo.getList().add(task);
         }
         list.add(weimeiinfo);
 
-        Element elementBeauty= elementMain.select("div[class^=Sstyle2]").get(0);
+        Element elementBeauty = elementMain.select("div[class^=Sstyle2]").get(0);
         Elements beautyinfos = elementBeauty.select("li");
         BeautyInfo beautyinfo = new BeautyInfo();
-        for (Element info : beautyinfos){
+        for (Element info : beautyinfos) {
             Elements a = info.select("a");
             String title = a.select("img").attr("alt");
             String href = a.attr("href");
@@ -167,15 +182,15 @@ public class ChoiceFragment extends BaseFragment {
             System.out.println(title);
             System.out.println(href);
             System.out.println(img);
-            Task task = new Task(title,img,href,"");
+            Task task = new Task(title, img, href, "");
             beautyinfo.getList().add(task);
         }
         list.add(beautyinfo);
 
-        Element elementHair= elementMain.select("div[class^=Sstyle2]").get(1);
+        Element elementHair = elementMain.select("div[class^=Sstyle2]").get(1);
         Elements hairinfos = elementHair.select("li");
         HairInfo hairinfo = new HairInfo();
-        for (Element info : hairinfos){
+        for (Element info : hairinfos) {
             Elements a = info.select("a");
             String title = a.select("img").attr("alt");
             String href = a.attr("href");
@@ -183,7 +198,7 @@ public class ChoiceFragment extends BaseFragment {
             System.out.println(title);
             System.out.println(href);
             System.out.println(img);
-            Task task = new Task(title,img,href,"");
+            Task task = new Task(title, img, href, "");
             hairinfo.getList().add(task);
         }
         list.add(hairinfo);
@@ -191,7 +206,7 @@ public class ChoiceFragment extends BaseFragment {
         Elements elementSexy = elementMain.select("div[class^=Cstyle4]");
         Elements sexyinfos = elementSexy.select("li");
         SexyInfo sexyInfo = new SexyInfo();
-        for (Element info : sexyinfos){
+        for (Element info : sexyinfos) {
             Elements a = info.select("a");
             String title = a.select("img").attr("alt");
             String href = a.attr("href");
@@ -199,11 +214,34 @@ public class ChoiceFragment extends BaseFragment {
             System.out.println(title);
             System.out.println(href);
             System.out.println(img);
-            Task task = new Task(title,img,href,"");
+            Task task = new Task(title, img, href, "");
             sexyInfo.getList().add(task);
         }
         list.add(sexyInfo);
 
+        return list;
+    }
+
+    private List<Object> parseHair(Document document) {
+        List<Object> list = new ArrayList<>();
+        Elements elements = document.select("div[class^=w960 r]");
+        Element elementMain = elements.get(0);
+
+        Elements elementBanner = elementMain.select("div[class^=hd l re]");
+        Elements bannerinfos = elementBanner.select("a");
+        BannerInfo bannerinfo = new BannerInfo();
+        for (Element info : bannerinfos) {
+            Elements a = info.select("a");
+            String title = a.attr("imgsm");
+            String href = a.attr("href");
+            String img = a.select("img").attr("src");
+            System.out.println(title);
+            System.out.println(href);
+            System.out.println(img);
+            Task task = new Task(title, img, href, "");
+            bannerinfo.getList().add(task);
+        }
+        list.add(bannerinfo);
         return list;
     }
 }

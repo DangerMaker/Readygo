@@ -26,5 +26,7 @@ public class RtysListContract {
         void onRefresh();
 
         void loadMore();
+
+        void getData();
     }
 }
