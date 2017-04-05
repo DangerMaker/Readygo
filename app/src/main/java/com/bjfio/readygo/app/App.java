@@ -3,13 +3,16 @@ package com.bjfio.readygo.app;
 
 import android.app.Activity;
 import android.app.Application;
+import android.widget.Toast;
 
 import com.bjfio.readygo.model.db.RealmHelper;
 import com.bjfio.readygo.widget.AppBlockCanaryContext;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.GlideBuilder;
 import com.bumptech.glide.MemoryCategory;
+import com.bumptech.glide.load.Key;
 import com.bumptech.glide.load.engine.cache.MemoryCache;
+import com.facebook.stetho.Stetho;
 import com.github.moduth.blockcanary.BlockCanary;
 import com.squareup.leakcanary.LeakCanary;
 import com.umeng.socialize.PlatformConfig;
@@ -42,6 +45,8 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+
+        Stetho.initializeWithDefaults(this);
         //蒲公英crash上报
 //        PgyCrashManager.register(this);
         //初始化内存泄漏检测

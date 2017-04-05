@@ -1,6 +1,8 @@
 package com.bjfio.readygo.ui.activitys;
 
+import android.app.WallpaperManager;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -16,14 +18,17 @@ import com.bjfio.readygo.utils.EventUtil;
 import com.bjfio.readygo.utils.FileUtil;
 import com.bjfio.readygo.utils.RxUtil;
 import com.bjfio.readygo.utils.ShareUtils;
+import com.bjfio.readygo.utils.SystemUtils;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -43,15 +48,18 @@ public class BrowseImagesActivity extends BaseActivity {
     public int mCurrentIndex = 1;
     @BindView(R.id.right_button)
     TextView shareBtn;
+    @BindView(R.id.right_button1)
+    TextView setWall;
     BrowseImagePagerAdatper mAdapter;
     List<String> imageUrls;
     String root;
     String shareImageUrl;
+    String url;
 
     @OnClick(R.id.right_button)
     public void share() {
         if (imageUrls != null && !EventUtil.isFastDoubleClick())
-            FileUtil.getPathByUrl(this, shareImageUrl)
+            FileUtil.getPathByUrl(this, mAdapter.getItem(mCurrentIndex).getUrl())
                     .compose(RxUtil.<Uri>rxSchedulerHelper())
                     .subscribe(new Observer<Uri>() {
                         @Override
@@ -74,6 +82,39 @@ public class BrowseImagesActivity extends BaseActivity {
                     });
     }
 
+    @OnClick(R.id.right_button1)
+    public void setWall() {
+        if (imageUrls != null && !EventUtil.isFastDoubleClick())
+            FileUtil.getBitmapByUrl(this, mAdapter.getItem(mCurrentIndex).getUrl())
+                    .compose(RxUtil.<Bitmap>rxSchedulerHelper())
+                    .subscribe(new Observer<Bitmap>() {
+                        @Override
+                        public void onCompleted() {
+                            System.out.println("onCompleted");
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            System.out.println("onError" + e.getMessage());
+                            if (e instanceof MyException) {
+                                EventUtil.showSnackbar(getRootView(BrowseImagesActivity.this), e.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onNext(Bitmap bitmap) {
+                            WallpaperManager manager = WallpaperManager.getInstance(BrowseImagesActivity.this);
+                            try {
+                                manager.setBitmap(bitmap);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            EventUtil.showSnackbar(getRootView(BrowseImagesActivity.this),"设置成功");
+                        }
+                    });
+    }
+
+
     @OnClick(R.id.back)
     public void goback() {
         finish();
@@ -86,17 +127,20 @@ public class BrowseImagesActivity extends BaseActivity {
         setContentView(R.layout.activity_rtys_detail);
         shareBtn.setVisibility(View.VISIBLE);
         shareBtn.setText("分享");
+        setWall.setVisibility(View.VISIBLE);
+        setWall.setText("设置为壁纸");
 
         Intent intent = getIntent();
-        String url = intent.getStringExtra("url");
+        url = intent.getStringExtra("url");
         shareImageUrl = intent.getStringExtra("imageUrl");
-        int index = url.lastIndexOf("/");
-        root = url.substring(0, index + 1);
+        int index = url.lastIndexOf(".html");
+        root = url.substring(0, index);
         loadTasks(url);
     }
 
     private void processData(List<String> list) {
         imageUrls = list;
+        imageUrls.add(0, url);
         mCurrentIndex = 0;
 
         if (list != null && list.size() > 0) {
@@ -128,7 +172,7 @@ public class BrowseImagesActivity extends BaseActivity {
                 .map(new Func1<String, String>() {
                     @Override
                     public String call(String s) {
-                        return root + s;
+                        return root + "_" + s + ".html";
                     }
                 })
                 .toList()
@@ -141,30 +185,33 @@ public class BrowseImagesActivity extends BaseActivity {
                 }, new Action1<Throwable>() {
                     @Override
                     public void call(Throwable throwable) {
-
+                        System.out.println("go");
                     }
                 });
     }
 
     private List<String> parseToRtysDetail(Document document) {
-        Elements elements = document.select("li[class^=pageAll]");
         List<String> tasks = new ArrayList<>();
-        for (Element element : elements) {
-            Elements hrefElement = element.select("a");
-            String href = hrefElement.attr("href");
-            System.out.println("href ------->" + href);
-            tasks.add(href);
-        }
+        Elements elements = document.select("div[class^=pages]");
+        Elements pageElements = elements.get(0).select("li");
+        if (!pageElements.isEmpty()) {
+            String firstli = pageElements.get(0).text();
+            String regEx = "[^0-9]";
+            Pattern p = Pattern.compile(regEx);
+            Matcher m = p.matcher(firstli);
+            int total = Integer.parseInt(m.replaceAll("").trim());
 
-        if (tasks != null) {
-            tasks.remove(0);
+            for (int i = 2; i < total; i++) {
+                tasks.add(i + "");
+            }
         }
         return tasks;
     }
 
     @OnPageChange(R.id.vp)
     void onPageSelected(int position) {
-        txtIndex.setText(String.valueOf(position + 1 + "/" + imageUrls
+        mCurrentIndex = position;
+        txtIndex.setText(String.valueOf(mCurrentIndex + 1 + "/" + imageUrls
                 .size()));
     }
 

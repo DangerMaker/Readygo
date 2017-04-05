@@ -22,7 +22,7 @@ import java.util.List;
 public class BrowseImagePagerAdatper extends FragmentStatePagerAdapter {
 
     private final String TAG = this.getClass().getSimpleName();
-    private SparseArray<Fragment> fragments;
+    private SparseArray<ScanImageFragment> fragments;
     List<String> list;
 
     public BrowseImagePagerAdatper(FragmentManager fm,List<String> list) {
@@ -32,8 +32,8 @@ public class BrowseImagePagerAdatper extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
-        Fragment fragment = fragments.get(position);
+    public ScanImageFragment getItem(int position) {
+        ScanImageFragment fragment = fragments.get(position);
         if (fragment == null) {
             fragment = CreateFragment(position);
             fragments.put(position, fragment);
@@ -59,7 +59,7 @@ public class BrowseImagePagerAdatper extends FragmentStatePagerAdapter {
 
     }
 
-    private Fragment CreateFragment(int arg) {
+    private ScanImageFragment CreateFragment(int arg) {
         return ScanImageFragment.getInstance(list.get(arg));
     }
 }

@@ -31,6 +31,7 @@ public class ScanImageFragment extends BaseFragment<ScanImagePresenter> implemen
     ProgressBar progressBar;
 
     String url;
+    String imageUrl;
 
     boolean isFinish = false;
 
@@ -79,13 +80,17 @@ public class ScanImageFragment extends BaseFragment<ScanImagePresenter> implemen
                             isFinish = true;
                         }
                     });
-
+            imageUrl = response;
         }
     }
 
     @Override
     public void refreshFaild(String msg) {
         showError(msg);
+    }
+
+    public String getUrl(){
+        return imageUrl;
     }
 
 }

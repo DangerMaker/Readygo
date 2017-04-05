@@ -55,7 +55,7 @@ public class NewsHomeFragment extends BaseFragment{
     @Override
     protected void initView(LayoutInflater inflater) {
         vestData = new ArrayList<>();
-        EasyFragment fragment1 = new EasyFragment(new RtysFragment(), "艺术人生");
+        EasyFragment fragment1 = new EasyFragment(ImageListFragment.getInstance(ImageListFragment.TYPE_SEXY), "高清套图");
         EasyFragment fragment2 = new EasyFragment(new ChoiceFragment(), "精选");
 //        EasyFragment fragment3 = new EasyFragment(EmptyFragment.getInstance("child","2"), "福利");
 

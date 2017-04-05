@@ -63,10 +63,14 @@ public class ScanImagePresenter extends RxPresenter implements ScanImageContract
     }
 
     private String parseToImage(Document document) {
-        Elements elements = document.select("div[class^=ArticleBox]");
+        Elements elements = document.select("div[class^=articleBody]");
         Element imgElement = elements.get(0).select("img").first();
         String imgUrl = imgElement.attr("src");
         System.out.println("img -------->" + imgUrl);
+//        Elements elements = document.select("div[class^=ArticleBox]");
+//        Element imgElement = elements.get(0).select("img").first();
+//        String imgUrl = imgElement.attr("src");
+//        System.out.println("img -------->" + imgUrl);
         return imgUrl;
     }
 }

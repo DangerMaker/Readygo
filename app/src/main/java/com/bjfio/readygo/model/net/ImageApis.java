@@ -25,4 +25,8 @@ public interface ImageApis {
     @GET("weimeiyijing/list_48_{page}.html")
     Observable<String> getWeimeiUrlPage(@Path("page") String page);
 
+//    http://www.55156.com/meinvtupian/list_43_2.html
+    @GET("meinvtupian/list_43_{page}.html")
+    Observable<String> getBeautyUrlPage(@Path("page") String page);
+
 }

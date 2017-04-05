@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import com.bjfio.readygo.R;
 import com.bjfio.readygo.base.BaseFragment;
 import com.bjfio.readygo.model.bean.Task;
+import com.bjfio.readygo.presenter.BeautyListPresenter;
 import com.bjfio.readygo.presenter.HairListPresenter;
 import com.bjfio.readygo.presenter.RtysListPresenter;
 import com.bjfio.readygo.presenter.SexyListPresenter;
@@ -39,6 +40,7 @@ public class ImageListFragment extends BaseFragment<RtysListPresenter> implement
     public static final int TYPE_HAIR = 0;//hair
     public static final int TYPE_SEXY = 1;//sexy
     public static final int TYPE_WEIMEI = 2;//weimei
+    public static final int TYPE_BEAUTY = 3;//weimei
 
     public static final String ARGUMENT_TYPE = "type";
     public final static String PRE_NAME = "rtys_column";
@@ -97,6 +99,8 @@ public class ImageListFragment extends BaseFragment<RtysListPresenter> implement
                 mPresenter = new SexyListPresenter(this);
             }else if(type == TYPE_WEIMEI){
                 mPresenter = new WeimeiListPresenter(this);
+            }else if(type == TYPE_BEAUTY){
+                mPresenter = new BeautyListPresenter(this);
             }
         if (mAdapter == null)
             mAdapter = new RecyclerArrayAdapter<Task>(mContext) {

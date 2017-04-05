@@ -57,7 +57,6 @@ public class CameraActivity extends Activity {
         takeVideoBtn.setOnClickListener(takeVideoClickListener);
 
         imageView = (ImageView) findViewById(R.id.imageView1);
-
     }
 
     private final OnClickListener takePiClickListener = new View.OnClickListener() {

@@ -45,9 +45,9 @@ public class BeautyItemHolder extends BaseViewHolder<BeautyInfo> {
         more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent intent = new Intent(getContext(), ImageListActivity.class);
-//                intent.putExtra(ImageListFragment.ARGUMENT_TYPE,ImageListFragment.TYPE_SEXY);
-//                getContext().startActivity(intent);
+                Intent intent = new Intent(getContext(), ImageListActivity.class);
+                intent.putExtra(ImageListFragment.ARGUMENT_TYPE,ImageListFragment.TYPE_BEAUTY);
+                getContext().startActivity(intent);
             }
         });
 

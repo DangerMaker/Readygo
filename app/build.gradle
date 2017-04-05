@@ -93,4 +93,5 @@ dependencies {
     compile files('libs/umeng_social_net.jar')
     compile files('libs/umeng_social_shareboard.jar')
     compile files('libs/umeng_social_shareview.jar')
+    compile 'com.facebook.stetho:stetho:1.4.2'
 }
