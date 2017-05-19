@@ -11,10 +11,11 @@ import android.widget.TextView;
 
 import com.bjfio.readygo.R;
 import com.bjfio.readygo.component.ImageLoader;
-import com.bjfio.readygo.event.HomeTabEvent;
 import com.bjfio.readygo.model.bean.BeautyInfo;
+import com.bjfio.readygo.model.bean.Task;
 import com.bjfio.readygo.ui.activitys.ImageListActivity;
 import com.bjfio.readygo.ui.fragments.ImageListFragment;
+import com.bjfio.readygo.ui.listener.ImageListener;
 import com.bjfio.readygo.utils.ScreenUtil;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
@@ -65,6 +66,7 @@ public class BeautyItemHolder extends BaseViewHolder<BeautyInfo> {
 
             picTitle.setText(data.getList().get(i).getTitle());
             ImageLoader.loadImage(getContext(), data.getList().get(i).getImg(), picImage);
+            setImageListener(picImage,data.getList().get(i));
 
             GridLayout.LayoutParams gl = (GridLayout.LayoutParams)convertView.getLayoutParams();
             gl.width = (dm.widthPixels - 4 * margin) / 3;
@@ -73,5 +75,9 @@ public class BeautyItemHolder extends BaseViewHolder<BeautyInfo> {
 
             gridLayout.addView(convertView);
         }
+    }
+
+    private void setImageListener(View view, Task task){
+        view.setOnClickListener(new ImageListener(task));
     }
 }

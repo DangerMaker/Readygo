@@ -7,6 +7,7 @@ import android.util.Log;
 import android.util.SparseArray;
 import android.view.ViewGroup;
 
+import com.bjfio.readygo.ui.fragments.CenterFragment;
 import com.bjfio.readygo.ui.fragments.EmptyFragment;
 import com.bjfio.readygo.ui.fragments.NewsHomeFragment;
 
@@ -36,6 +37,8 @@ public class HomePageAdapter extends FragmentPagerAdapter {
         switch (arg) {
             case POSITION_HOME_ITEM:
                 return new NewsHomeFragment();
+            case POSITION_USER_ITEM:
+                return new CenterFragment();
         }
         return EmptyFragment.getInstance("parent",arg + "");
     }

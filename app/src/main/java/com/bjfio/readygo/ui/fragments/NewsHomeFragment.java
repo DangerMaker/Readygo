@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import com.bjfio.readygo.R;
 import com.bjfio.readygo.base.BaseFragment;
-import com.bjfio.readygo.event.HomeTabEvent;
 import com.bjfio.readygo.ui.adapter.EasyPagerAdatper;
 import com.bjfio.readygo.ui.view.AmazingToolbar;
 

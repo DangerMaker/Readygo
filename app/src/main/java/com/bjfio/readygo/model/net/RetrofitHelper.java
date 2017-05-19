@@ -83,15 +83,15 @@ public class RetrofitHelper {
                 }
             };
 
-            Interceptor headerInterceptor = new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
+//            Interceptor headerInterceptor = new Interceptor() {
+//                @Override
+//                public Response intercept(Chain chain) throws IOException {
 
-                    Request request = chain.request();
+//                    Request request = chain.request();
 //                    Request.Builder builder = request.newBuilder();
 //                    request = builder.addHeader("cookie", "cookie1").build();
 
-                    Response response = chain.proceed(request);
+//                    Response response = chain.proceed(request);
 
 //                    if(flag){
 //                        Request.Builder b = request.newBuilder();
@@ -102,14 +102,14 @@ public class RetrofitHelper {
 //                        flag = false;
 //                    }
 
-                    return response;
-                }
-            };
+//                    return response;
+//                }
+//            };
 
             //设置缓存
 //            builder.addNetworkInterceptor(cacheInterceptor);
             builder.addInterceptor(cacheInterceptor);
-            builder.addInterceptor(headerInterceptor);
+//            builder.addInterceptor(headerInterceptor);
             builder.cache(cache);
             //设置超时
             builder.connectTimeout(10, TimeUnit.SECONDS);

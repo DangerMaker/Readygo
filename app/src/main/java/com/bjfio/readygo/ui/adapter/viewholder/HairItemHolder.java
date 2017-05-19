@@ -13,8 +13,10 @@ import com.bjfio.readygo.R;
 import com.bjfio.readygo.component.ImageLoader;
 import com.bjfio.readygo.model.bean.BeautyInfo;
 import com.bjfio.readygo.model.bean.HairInfo;
+import com.bjfio.readygo.model.bean.Task;
 import com.bjfio.readygo.ui.activitys.ImageListActivity;
 import com.bjfio.readygo.ui.fragments.ImageListFragment;
+import com.bjfio.readygo.ui.listener.ImageListener;
 import com.bjfio.readygo.utils.ScreenUtil;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
@@ -64,6 +66,8 @@ public class HairItemHolder extends BaseViewHolder<HairInfo> {
 
             picTitle.setText(data.getList().get(i).getTitle());
             ImageLoader.loadImage(getContext(), data.getList().get(i).getImg(), picImage);
+            setImageListener(picImage,data.getList().get(i));
+
 
             GridLayout.LayoutParams gl = (GridLayout.LayoutParams)convertView.getLayoutParams();
             gl.width = (dm.widthPixels - 4 * margin) / 3;
@@ -72,5 +76,9 @@ public class HairItemHolder extends BaseViewHolder<HairInfo> {
 
             gridLayout.addView(convertView);
         }
+    }
+
+    private void setImageListener(View view, Task task){
+        view.setOnClickListener(new ImageListener(task));
     }
 }
